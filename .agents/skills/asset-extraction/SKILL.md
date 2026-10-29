@@ -24,7 +24,7 @@ Examples:
 1. **Strictly non-destructive.** Never modify, overwrite, or delete source project files. All extractions and analyses write only to dedicated REA directories.
 2. **Dedicated project namespaces.** Root folders in REA must not become scratch dumps. Every target project receives an isolated slug folder.
 3. **Disk boundaries.** Keep all heavy analysis dumps and extraction outputs inside this repository. Never write heavy analysis dumps or game binaries to system drives or other drives.
-4. **Reproducibility and divergence tracking.** Maintain project state so cold agents can resume or update assets without starting from zero.
+4. **Divergence and audit tracking.** Never discard missing assets silently. When mapped files are missing on disk (such as purged events or delisted DLC) or cut by scope, document the cause in `meta/manifest.json` and surface notice cards in the visual gallery.
 5. **Stage gating.** Complete each roadmap stage fully before proceeding. Stop and present stage findings to the user for discussion. Never finalize prematurely.
 6. **Strict provenance.** Assets must originate exclusively from the target binary/project files or official endpoints referenced in code. Never scrape fan wikis, fandom sites, or third-party repositories. If official game code points to a third-party host or CDN, flag it in the stage document for user review.
 7. **Direct REA tooling.** Use REA MCP tools (`open_binary`, `inspect_artifact`, `extract_artifact`, `inspect_il2cpp_metadata`, etc.) directly for analysis and extraction. Standalone engines in `tools/` serve only as fallbacks for proprietary containers.
@@ -41,6 +41,8 @@ For a project identified as `<project_slug>`:
 │       │   ├── manifest.json   # Asset index and source container hashes
 │       │   └── state.json      # Pipeline progress, entity IDs, divergence data
 │       ├── raw\                # Mirrored extraction preserving original virtual paths
+│       ├── gallery\            # Stage 2 interactive visual confirmation gallery
+│       │   └── index.html      # Self-contained visual confirmation page
 │       ├── library\            # Stage 3 standalone assets organized by category
 │       │   ├── audio\          # BGM, one-shots, isolated voicelines
 │       │   ├── textures\       # Standalone UI sprites, splash CGs, backgrounds
@@ -55,10 +57,11 @@ For a project identified as `<project_slug>`:
 
 ### Divergence and patch tracking
 
-Before extracting, check `meta/manifest.json`. If a previous run exists:
-1. Hash target project containers. Compare them against stored hashes.
-2. If files changed or new containers appeared, process only modified or added archives.
-3. Keep existing extracted assets intact, appending new items and updating the registry.
+Before extracting, check `meta/manifest.json`. If a previous run exists, process only modified or added archives.
+
+When cataloged files are missing on disk or excluded by scope:
+1. Document the missing paths, categories, and causes in `meta/manifest.json` and `meta/state.json`.
+2. Present notice cards in `gallery/index.html` detailing the divergence so missing files are never silently dropped.
 
 ## Exploration loop: confidence ladder and verification
 
@@ -131,7 +134,13 @@ Extract the cataloged assets into `raw/` while strictly preserving the original 
 - Use REA MCP tools (`open_binary`, `inspect_artifact`, `extract_artifact`).
 - Check provenance. Reject external third-party sources. If an official asset points to an external URI or CDN, document the link in the extraction report and ask the user before pulling.
 
-**Checkpoint:** Save the extraction log and summary in `meta/manifest.json`. Present the extraction outcome to the user. Wait for user confirmation before moving to Stage 3.
+#### Visual confirmation gallery
+Before proceeding to Stage 3, verify extracted coverage in an interactive local gallery:
+- Build `gallery/index.html` from `resources/gallery-template.html`, linking directly to `raw/` files without copying.
+- Note an appropriate extracted icon or portrait found along the way and assign it as the page favicon.
+- Include audit notice cards for missing, purged, or out-of-scope assets so divergences are explicitly displayed.
+
+**Checkpoint:** Save extraction counts, hashes, and divergence notes in `meta/manifest.json`. Host `gallery/index.html` on a local HTTP server, share the `http://localhost:<port>` URL for user review, and wait for confirmation before moving to Stage 3.
 
 ### Stage 3: Library staging (categorization)
 

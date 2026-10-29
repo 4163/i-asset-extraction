@@ -11,24 +11,44 @@ REA is an independent reverse-engineering tool suite registered globally as an M
 
 ## Quick start
 
-Clone the repository and start an agent session in the root folder:
+1. Clone the repository and enter the directory:
+   ```bash
+   git clone https://github.com/4163/i-assets-extraction.git
+   cd i-assets-extraction
+   ```
 
-```bash
-git clone https://github.com/4163/i-asset-extraction.git
-cd i-asset-extraction
-```
+2. Install prerequisites:
+   Install `rea-agents` globally and register the MCP server with your coding agent per the [REA setup guide](https://github.com/morluto/rea#readme):
+   ```bash
+   npm install -g rea-agents
+   rea setup
+   ```
 
-Run the asset extraction pipeline:
+3. Run the asset extraction pipeline:
+   ```text
+   /asset-extraction "<path/to/game_or_project>" "<target_scope>"
+   ```
 
-```text
-/asset-extraction "<path/to/game_or_project>" "<target_scope>"
-```
+   Example:
+   ```text
+   /asset-extraction "/path/to/game" "CharacterName"
+   ```
 
-Example:
+## Pipeline roadmap and checkpoints
 
-```text
-/asset-extraction "/path/to/game" "CharacterName"
-```
+The pipeline runs through four progressive stages. At each checkpoint, the agent pauses, reports deliverables, and awaits user confirmation before advancing.
+
+| Stage | Focus | Primary deliverables | Checkpoint report |
+| :--- | :--- | :--- | :--- |
+| **Stage 1** | Entity and reference mapping | `specs/mapping.md`<br>`meta/manifest.json`<br>`meta/state.json` | Report resolved aliases, identifiers, and catalog verification results. |
+| **Stage 2** | Target-mirrored extraction | `raw/`<br>`gallery/index.html` | Host local gallery (`http://localhost:<port>`) to manually check files and flag missing assets. |
+| **Stage 3** | Library staging | `library/audio/`<br>`library/textures/`<br>`library/text/`<br>`specs/dependent-assets.md` | Report standalone library files and compound dependency clusters. |
+| **Stage 4** | Visualization specification | `specs/visualization-spec.md` | Present runtime and rendering blueprints for final sign-off. |
+
+- **Stage 1 (Mapping)**: Resolves target IDs, aliases, and container hashes across package tables. Verifies zero dangling references.
+- **Stage 2 (Extraction)**: Mirrors assets into `raw/` preserving original paths. Flags client-purged or out-of-scope files in the local gallery.
+- **Stage 3 (Staging)**: Copies standalone files to `library/` and catalogs compound rigs in `specs/dependent-assets.md`.
+- **Stage 4 (Specification)**: Documents material bindings, hierarchies, and runtime recommendations in `specs/visualization-spec.md`.
 
 ## Directory layout
 
