@@ -1,23 +1,23 @@
 ---
-name: assets-extraction
-description: Trigger on /assets-extraction or whenever asked to map, extract, organize, or document targeted assets from a game or binary directory.
+name: asset-extraction
+description: Trigger on /asset-extraction or whenever asked to map, extract, organize, or document targeted assets from a game or binary directory.
 argument-hint: "<project_path> <entity_scope_query>"
 ---
 
-# Assets extraction pipeline
+# Asset extraction pipeline
 
 A structured, non-destructive pipeline for targeted asset extraction, categorization, and presentation specification from game or application binaries.
 
 ## Invocation
 
 ```text
-/assets-extraction <target_path> <scope_instruction>
+/asset-extraction <target_path> <scope_instruction>
 ```
 
 Examples:
-- `/assets-extraction "/path/to/game_or_project" "CharacterName"`
-- `/assets-extraction "/path/to/game_or_project" "WeaponSlug"`
-- `/assets-extraction "/path/to/game_or_project" "FactionName or EventId"`
+- `/asset-extraction "/path/to/game_or_project" "CharacterName"`
+- `/asset-extraction "/path/to/game_or_project" "WeaponSlug"`
+- `/asset-extraction "/path/to/game_or_project" "FactionName or EventId"`
 
 ## Core principles and constraints
 

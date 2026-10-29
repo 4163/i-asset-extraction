@@ -1,4 +1,4 @@
-# Iterative assets extraction
+# Iterative asset extraction
 
 An agent pipeline and workspace for scoped, reproducible asset extraction, categorization, and visualization specification using REA.
 
@@ -14,20 +14,20 @@ REA is an independent reverse-engineering tool suite registered globally as an M
 Clone the repository and start an agent session in the root folder:
 
 ```bash
-git clone https://github.com/4163/i-assets-extraction.git
-cd i-assets-extraction
+git clone https://github.com/4163/i-asset-extraction.git
+cd i-asset-extraction
 ```
 
-Run the assets extraction pipeline:
+Run the asset extraction pipeline:
 
 ```text
-/assets-extraction "<path/to/game_or_project>" "<target_scope>"
+/asset-extraction "<path/to/game_or_project>" "<target_scope>"
 ```
 
 Example:
 
 ```text
-/assets-extraction "/path/to/game" "CharacterName"
+/asset-extraction "/path/to/game" "CharacterName"
 ```
 
 ## Directory layout
@@ -35,7 +35,7 @@ Example:
 - `workspace/`: Extracted files, staged libraries, decompiled pseudocode, and generated specifications. Each target project receives an isolated subfolder.
 - `tools/`: Optional external reverse-engineering utilities and engines (such as Ghidra, JADX, or Kuna) when required as fallbacks.
 - `cache/`: Temporary extraction dumps, streams, and evidence bundles.
-- `.agents/`: Workspace rules and specialized agent skills, including the assets extraction workflow.
+- `.agents/`: Workspace rules and specialized agent skills, including the asset extraction workflow.
 
 ## License
 
