@@ -1,0 +1,31 @@
+# Workflow outputs and project workspaces
+/workspace/*
+!/workspace/.gitkeep
+
+# Temporary dumps, caches, and evidence bundles
+/cache/*
+!/cache/.gitkeep
+
+# External reverse-engineering tools and engines
+/tools/*
+!/tools/.gitkeep
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+
+# Node artifacts
+node_modules/
+npm-debug.log*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
