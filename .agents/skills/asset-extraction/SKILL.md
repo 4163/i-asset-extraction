@@ -40,13 +40,13 @@ For a project identified as `<project_slug>`:
 │       ├── meta\               # Project state, hash manifests, alias registries
 │       │   ├── manifest.json   # Asset index and source container hashes
 │       │   └── state.json      # Pipeline progress, entity IDs, divergence data
-│       ├── raw\                # Mirrored extraction preserving original virtual paths
-│       ├── gallery\            # Stage 2 interactive visual confirmation gallery
-│       │   └── index.html      # Self-contained visual confirmation page
-│       ├── library\            # Stage 3 standalone assets organized by category
+│       ├── assets\             # Project assets
 │       │   ├── audio\          # BGM, one-shots, isolated voicelines
 │       │   ├── textures\       # Standalone UI sprites, splash CGs, backgrounds
-│       │   └── text\           # Subtitle files, dialogue trees, localized strings
+│       │   ├── text\           # Subtitle files, dialogue trees, localized strings
+│       │   └── <compound_dirs>\# Preserved relative hierarchies for meshes, rigs, animations
+│       ├── gallery\            # Stage 2 interactive visual confirmation gallery
+│       │   └── index.html      # Self-contained visual confirmation page
 │       └── specs\              # Stage deliverable documents
 │           ├── mapping.md
 │           ├── dependent-assets.md
@@ -126,50 +126,56 @@ Structure `specs/mapping.md` into two clear sections. All item types listed belo
 
 ### Stage 2: Target-mirrored extraction
 
-Extract the cataloged assets into `raw/` while strictly preserving the original virtual folder hierarchy.
+Extract cataloged assets into `assets/` preserving internal package paths.
 
 #### Requirements
-- Replicate the internal package path (e.g., `raw/Assets/Characters/<Codename>/...` or `raw/Game/Characters/...`).
-- Preserving original relative paths prevents breaking links between meshes, materials, texture maps, and skeleton configs.
+- Replicate internal package paths (e.g., `assets/Assets/Characters/<Codename>/...` or `assets/Game/Characters/...`) to preserve relative linkages.
 - Use REA MCP tools (`open_binary`, `inspect_artifact`, `extract_artifact`).
-- Check provenance. Reject external third-party sources. If an official asset points to an external URI or CDN, document the link in the extraction report and ask the user before pulling.
+- Check provenance. Reject third-party sources. If official assets reference an external CDN, document the URI and request confirmation before retrieving.
 
 #### Visual confirmation gallery
 Before proceeding to Stage 3, verify extracted coverage in an interactive local gallery:
-- Build `gallery/index.html` from `resources/gallery-template.html`, linking directly to `raw/` files without copying.
-- Note an appropriate extracted icon or portrait found along the way and assign it as the page favicon.
-- Include audit notice cards for missing, purged, or out-of-scope assets so divergences are explicitly displayed.
+- Build `gallery/index.html` from `resources/gallery-template.html`, linking directly to `assets/` files without copying.
+- Assign an appropriate extracted icon or portrait as the page favicon.
+- Surface notice cards for missing, purged, or out-of-scope assets.
 
-**Checkpoint:** Save extraction counts, hashes, and divergence notes in `meta/manifest.json`. Host `gallery/index.html` on a local HTTP server, share the `http://localhost:<port>` URL for user review, and wait for confirmation before moving to Stage 3.
+**Checkpoint:** Save extraction counts, hashes, and divergence notes in `meta/manifest.json`. Host `gallery/index.html` on a local HTTP server, share the `http://localhost:<port>` URL, and wait for confirmation before moving to Stage 3.
 
-### Stage 3: Library staging (categorization)
+### Stage 3: Asset categorization
 
-Process extracted files from `raw/` into two distinct categories. All category examples below are non-exhaustive illustrations of common game asset types; include any file formats found in the target project.
+Partition assets in `assets/` into standalone media and compound clusters.
 
-#### Category A: Standalone assets (copied to `library/`)
-Files that function independently without runtime dependencies (illustrative examples):
-- **Audio:** Background music tracks, ambient loops, standalone sound effects, individual voice clips.
-- **Graphics:** Standalone UI icons, full-screen background CGs, splash illustrations, promotional art.
-- **Text:** Localized subtitle files, voiceline transcripts, character profile bios, standalone lore books, dialogue trees.
+#### Category A: Standalone assets
+Files that function independently without runtime dependencies:
+- **Audio:** Background music tracks, ambient loops, sound effects, voice clips (organized into `assets/audio/`).
+- **Graphics:** Standalone UI icons, background CGs, splash illustrations, promotional art (organized into `assets/textures/`).
+- **Text:** Localized subtitle files, voiceline transcripts, character bios, lore documents, dialogue trees (organized into `assets/text/`).
 
-*Dual-use items:* Assets that can stand on their own but are also referenced by compound assets (e.g., a profile icon reused as a billboard decal on a 3D model) must be copied to `library/` and also documented in `specs/dependent-assets.md` for discussion.
+Move standalone files into their respective category directories under `assets/`.
 
-#### Category B: Dependent and compound assets (held in `raw/`)
-Do not copy these into `library/` yet. Catalog them in `specs/dependent-assets.md`. The examples below illustrate typical multi-file clusters, but any interdependent asset format discovered in the target engine belongs here:
+*Dual-use items:* Assets that stand alone but are also referenced by compound assets (such as an icon reused on a 3D billboard) are organized into `assets/textures/` and cross-referenced in `specs/dependent-assets.md`.
 
-- **3D skeletal rigs:** Mesh files (`.fbx`, `.obj`, `.gltf`), texture sets (albedo, normal, roughness, metallic, emissive, ambient occlusion), material graphs (`.mat`), bone skeletons, skinning weights, blend shapes / morph targets, animation clips (`.anim`), LOD tiers, collision hulls, cloth/spring configs.
-- **2D skeletal puppets (Live2D / Spine):** Model definitions (`.moc3`, `.model3.json` or `.skel`, `.json`), texture atlas sheets, atlas coordinate files (`.atlas`), physics configs (`.physics3.json`), motion tracks (`.motion3.json`), expression files (`.exp3.json`).
-- **VFX particle systems:** Particle emitter settings, flipbook texture sheets, ribbon shaders, distortion maps.
-- **Composite UI systems:** Prefab layouts, SDF font atlases, 9-patch slice definitions, UI animator controllers.
+#### Category B: Dependent and compound assets
+Interdependent asset groups remain anchored in their original extracted paths to preserve relative file references:
+- **3D skeletal rigs:** Meshes (`.fbx`, `.obj`, `.gltf`), texture sets, material definitions (`.mat`), skeletons, skinning weights, animations (`.anim`), LOD tiers, collision hulls, cloth configs.
+- **2D skeletal puppets (Live2D / Spine):** Model definitions (`.moc3`, `.model3.json` or `.skel`, `.json`), texture atlases, coordinate files (`.atlas`), physics configs (`.physics3.json`), motion tracks (`.motion3.json`), expressions (`.exp3.json`).
+- **VFX particle systems:** Emitter settings, flipbook textures, ribbon shaders, distortion maps.
+- **Composite UI systems:** Prefabs, SDF font atlases, 9-patch slice definitions, UI animators.
 
-**Checkpoint:** Save `specs/dependent-assets.md`. Present the standalone staging summary and the compound asset inventory to the user. Discuss dual-use files and obtain confirmation before moving to Stage 4.
+#### Output organization
+Structure `specs/dependent-assets.md` into three parts:
+1. **Pre-organization snapshot:** The raw directory tree and file inventory as extracted in Stage 2.
+2. **Provenance ledger:** A mapping table tracking `Original package path`, `Organized path`, and `SHA-256 hash` for all moved standalone files.
+3. **Compound clusters:** Inventory of intact multi-file assemblies, their preserved relative paths, and required runtime dependencies.
+
+**Checkpoint:** Save `specs/dependent-assets.md`. Present the categorization summary, provenance ledger, and compound asset inventory to the user. Discuss dual-use files and obtain confirmation before moving to Stage 4.
 
 ### Stage 4: Presentation and visualization specification
 
 Create `specs/visualization-spec.md` to pave the way for rendering, previewing, or building a standalone repository for the compound assets identified in Stage 3.
 
 #### Requirements
-- **Factual asset clustering.** Document each compound asset group, file roles, and internal reference paths (e.g., which textures bind to which material slots, which bone hierarchy drives the mesh).
+- **Factual asset clustering.** Document each compound asset group, file roles, and internal reference paths in `assets/` (e.g., which textures bind to which material slots, which bone hierarchy drives the mesh).
 - **Runtime recommendations.** Provide concrete, accurate runtime and rendering recommendations matching the original engine representation. Listed runtimes are non-exhaustive examples to guide selection; recommend the exact runtime matching the discovered asset formats:
   - *Live2D:* Live2D Cubism Web SDK, PixiJS Live2D display, or official Cubism Viewer.
   - *Spine:* Spine Web Player or Spine-Pixi with matching runtime version.
