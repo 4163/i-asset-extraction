@@ -95,14 +95,14 @@ Generate `README.md` following this structure with all fields dynamically popula
 
 Extracted game assets, technical specifications, and interactive visual gallery for **[Entity Name]** from **[Game Title]** ([Game Version]).
 
-## Live preview
-
-Interactive web gallery: https://[user].github.io/[repo-name]
-
 ## Pipeline and reproduction
 
 These assets were extracted deterministically using the structured asset extraction pipeline:
 https://github.com/4163/i-asset-extraction
+
+## Live preview
+
+Interactive web gallery: https://[user].github.io/[repo-name]
 
 ## Asset overview
 
