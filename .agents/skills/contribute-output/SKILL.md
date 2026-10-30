@@ -81,15 +81,12 @@ Exclude local scratch Python scripts, raw download caches, and temporary analysi
 - Exclude `*.py`, `*.bat`, `*.sh` scripts generated for local extraction runs.
 - Exclude virtual hash folders containing redundant duplicates already organized in Stage 3.
 
-#### README dynamic generation rules
-Agents must never copy-paste template values verbatim or leave unpopulated placeholders. Generate each section dynamically from project facts:
-1. **No badge banners.** Do not include shields.io or third-party status badges. Keep the header clean and text-focused.
-2. **Prominent pipeline lineage.** Place the pipeline reproduction reference near the top, directly after the live preview link.
-3. **Dynamic tool discovery.** Do not copy example tool names. Inspect `meta/manifest.json`, extraction logs, or `tools/` to list only tools actually used for this specific target. If extraction relied exclusively on REA MCP tools, list REA with a link to the REA repository.
-4. **Dynamic asset categories.** In the asset overview table, only include rows for asset types that exist in the project. Omit categories with zero files. Do not declare 2D skeletal puppet categories unless the entity is primarily a 2D puppet.
-5. **Grounded technical specifications.** Document primary engine formats, skeleton hierarchies, or shader channel maps. Do not speculate on or declare 2D runtimes like Spine or Live2D unless the target character is fundamentally a 2D puppet.
-6. **Concise disclaimer.** State property ownership by the game publisher and limit the purpose statement strictly to archival. Do not enumerate long lists of asset types, and do not append third-party runtime SDK terms.
-
+#### README generation guidelines
+All template categories, technical fields, and tool entries below are non-exhaustive examples to guide structure rather than rigid boundaries. Agents must adjust them dynamically to reflect the actual target project, omitting unused rows and populating verified data:
+- **Asset overview:** Include only categories containing extracted files.
+- **Technical specifications:** Document the verified engine structures, skeleton hierarchies, or material parameters discovered in the workspace.
+- **Toolchain attribution:** Catalog only tools and utilities actually used during extraction, referencing their repositories or official documentation.
+- **Disclaimer:** Attribute asset ownership to the game publisher and state the archival purpose.
 #### README template structure
 Generate `README.md` following this structure with all fields dynamically populated:
 
@@ -141,14 +138,21 @@ All game assets and character content are property of [Game Publisher]. This rep
 - **Initial publication:**
   1. Initialize a git repository in the staging directory.
   2. Commit all staged files.
-  3. Run `gh repo create <repo-name> --public --source=. --remote=origin --push`.
+  3. Create the public repository with automated description and website URL:
+     ```bash
+     gh repo create <repo-name> --public --source=. --remote=origin --push --description "Extracted assets, technical specifications, and interactive gallery for <Entity Name> (<Game Title>)" --homepage "https://<user>.github.io/<repo-name>"
+     ```
   4. Deploy `gallery/` contents to GitHub Pages using `gh-pages` branch or repository settings.
 - **Repository synchronization:**
   1. Clone or fetch the existing remote repository into `cache/export/<project_slug>`.
   2. Overlay updated assets, specs, manifests, and rebuilt gallery.
   3. Update `README.md` version badges and asset counts, and append a concise summary under `## Version history`.
-  4. Commit with message: `feat(update): sync <entity> assets for <version>`.
-  5. Push to `main` and trigger GitHub Pages redeployment.
+  4. Update repository metadata via `gh repo edit --homepage "https://<user>.github.io/<repo-name>"`.
+  5. Commit with message: `feat(update): sync <entity> assets for <version>`.
+  6. Push to `main` and trigger GitHub Pages redeployment.
+
+> [!NOTE]
+> GitHub does not expose an API endpoint for the "Include in the home page: Packages" checkbox in repository sidebar settings. Unchecking Packages must be toggled manually in the repository About dialog if desired.
 
 ---
 
