@@ -43,6 +43,12 @@ The pipeline runs through four progressive stages. At each checkpoint, the agent
 - **Stage 3 (Categorization)**: Organizes standalone files into `assets/audio/`, `assets/textures/`, and `assets/text/`, leaves compound rigs anchored in original paths, and documents the pre-organization directory trace in `specs/dependent-assets.md`.
 - **Stage 4 (Specification)**: Documents material bindings, hierarchies, and runtime recommendations in `specs/visualization-spec.md`.
 
+## Community extractions
+
+| Game | Entity | Version | Repository | Live Gallery | Assets | Contributor |
+|---|---|---|---|---|---|---|
+| Genshin Impact | Faruzan | v7.1.0 | [faruzan-assets](https://github.com/4163/faruzan-assets) | [Live Gallery](https://4163.github.io/faruzan-assets) | 1,660 | [@4163](https://github.com/4163) |
+
 ## Directory layout
 
 - `workspace/`: Extracted files, categorized assets, decompiled pseudocode, and generated specifications. Each target project receives an isolated subfolder.
