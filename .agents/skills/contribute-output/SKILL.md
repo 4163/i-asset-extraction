@@ -41,17 +41,21 @@ Before staging files, verify project integrity and sanitize any remaining host p
 
 ---
 
-### Step 2: Interactive user alignment
+### Step 2: Mode resolution and alignment
 
-Prompt the user with three quick decisions:
+Check whether the target repository already exists on GitHub or if `meta/state.json` records an existing publication URL:
 
-1. **Repository name.** Propose `<game-slug>-<entity-slug>-assets` under the user's authenticated GitHub account. Confirm the name.
-2. **Heavy asset distribution.** When compound assets exceed standard Git thresholds (such as multi-gigabyte animation clip folders), ask whether to track them via Git LFS or package raw animations into a compressed GitHub Release attachment to keep git clones light.
-3. **GitHub Pages activation.** Confirm deploying `gallery/` to GitHub Pages (`gh-pages` branch or root docs) so the live preview URL works immediately.
+- **Initial publication (new repository):**
+  1. **Repository name.** Propose `<game-slug>-<entity-slug>-assets` under the user's authenticated GitHub account. Confirm the name.
+  2. **Heavy asset distribution.** When compound assets exceed standard Git thresholds (such as multi-gigabyte animation clip folders), ask whether to track them via Git LFS or package raw animations into a compressed GitHub Release attachment to keep git clones light.
+  3. **GitHub Pages activation.** Confirm deploying `gallery/` to GitHub Pages (`gh-pages` branch or root docs) so the live preview URL works immediately.
+- **Repository synchronization (existing repository):**
+  1. **Target repository.** Confirm the existing remote repository URL detected from project metadata.
+  2. **Patch scope.** Confirm the game client version bump (such as `v7.1.0` to `v7.2.0`) and summarize added or modified assets.
 
 ---
 
-### Step 3: Clean repository staging and push
+### Step 3: Staging and repository publishing
 
 Stage the export inside `cache/export/<project_slug>`:
 
@@ -138,20 +142,28 @@ Game artwork, character designs, audio recordings, and associated intellectual p
 ```
 
 #### Git execution
-1. Initialize a git repository in the staging directory.
-2. Commit all staged files.
-3. Run `gh repo create <repo-name> --public --source=. --remote=origin --push`.
-4. Deploy the `gallery/` contents to GitHub Pages using `gh-pages` branch or repository settings.
+- **Initial publication:**
+  1. Initialize a git repository in the staging directory.
+  2. Commit all staged files.
+  3. Run `gh repo create <repo-name> --public --source=. --remote=origin --push`.
+  4. Deploy `gallery/` contents to GitHub Pages using `gh-pages` branch or repository settings.
+- **Repository synchronization:**
+  1. Clone or fetch the existing remote repository into `cache/export/<project_slug>`.
+  2. Overlay updated assets, specs, manifests, and rebuilt gallery.
+  3. Update `README.md` version badges and asset counts, and append a concise summary under `## Version history`.
+  4. Commit with message: `feat(update): sync <entity> assets for <version>`.
+  5. Push to `main` and trigger GitHub Pages redeployment.
 
 ---
 
 ### Step 4: Upstream catalog registration
 
-After publishing the repository, register it in the central registry:
+After publishing or updating the repository, synchronize the central registry:
 
 1. Clone or fetch `https://github.com/4163/i-asset-extraction`.
 2. Locate the `Community extractions` table in its `README.md`.
-3. Append a new row formatted as follows:
+- **For initial publication:**
+  Append a new row to the table:
 
 ```markdown
 | Game | Entity | Version | Repository | Live Gallery | Assets | Contributor |
@@ -159,6 +171,7 @@ After publishing the repository, register it in the central registry:
 | <Game Title> | <Entity Name> | <Version> | [<repo-name>](https://github.com/<user>/<repo-name>) | [Live Gallery](https://<user>.github.io/<repo-name>) | <Count> | [@<user>](https://github.com/<user>) |
 ```
 
-4. Create branch `add-<project_slug>`.
-5. Run `gh pr create` with a concise description detailing the game, entity, asset counts, and live gallery link.
-
+  Create branch `add-<project_slug>` and run `gh pr create` with a summary of the new extraction.
+- **For repository synchronization:**
+  Locate the existing row matching `<Game Title>` and `<Entity Name>`. Update the `Version` and `Assets` count cells in place.
+  Create branch `update-<project_slug>-<version>` and run `gh pr create` titled `chore(catalog): update <Entity Name> to <version>`.

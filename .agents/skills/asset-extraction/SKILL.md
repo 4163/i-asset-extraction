@@ -15,9 +15,9 @@ A structured, non-destructive pipeline for targeted asset extraction, categoriza
 ```
 
 Examples:
-- `/asset-extraction "/path/to/game_or_project" "CharacterName"`
-- `/asset-extraction "/path/to/game_or_project" "WeaponSlug"`
-- `/asset-extraction "/path/to/game_or_project" "FactionName or EventId"`
+- Initial extraction: `/asset-extraction "/path/to/game_or_project" "CharacterName"`
+- Weapon or item scope: `/asset-extraction "/path/to/game_or_project" "WeaponSlug"`
+- Project patch update: `/asset-extraction "/path/to/game_or_project" "update CharacterName to v1.2"`
 
 ## Core principles and constraints
 
@@ -56,13 +56,18 @@ For a project identified as `<project_slug>`:
     └── <project_slug>\         # Temporary uncompressed streams, evidence dumps
 ```
 
-### Divergence and patch tracking
+### Patch updates and divergence tracking
 
-Before extracting, check `meta/manifest.json`. If a previous run exists, process only modified or added archives.
+Before extracting, check `meta/manifest.json`.
 
-When cataloged files are missing on disk or excluded by scope:
-1. Document the missing paths, categories, and causes in `meta/manifest.json` and `meta/state.json`.
-2. Present notice cards in `gallery/index.html` detailing the divergence so missing files are never silently dropped.
+1. **Incremental patch updates.** When updating an existing project or advancing client versions:
+   - Resolve update scope against official changelogs, package manifests, or user instructions.
+   - Diff package container hashes against `meta/manifest.json` to isolate only new or modified archives.
+   - Map, extract, and categorize newly introduced assets while leaving untouched files in place.
+   - Append new items to deliverables in `specs/`, refresh `gallery/index.html` with update badges, and log the patch delta in `meta/state.json`.
+2. **Divergence and missing assets.** When cataloged files are missing on disk (such as purged limited events or delisted DLC) or excluded by scope:
+   - Record missing paths, categories, and causes in `meta/manifest.json` and `meta/state.json`.
+   - Surface notice cards in `gallery/index.html` detailing the divergence so missing files are never silently dropped.
 
 ## Exploration loop: confidence ladder and verification
 
