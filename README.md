@@ -45,9 +45,9 @@ The pipeline runs through four progressive stages. At each checkpoint, the agent
 
 ## Community extractions
 
-| Game | Entity | Version | Repository | Live Gallery | Assets | Contributor |
-|---|---|---|---|---|---|---|
-| Genshin Impact | Faruzan | v7.1.0 | [faruzan-assets](https://github.com/4163/faruzan-assets) | [Live Gallery](https://4163.github.io/faruzan-assets) | 1,660 | [@4163](https://github.com/4163) |
+| Game | Entity | Version | Repository | Assets | Contributor |
+|---|---|---|---|---|---|
+| Genshin Impact | Faruzan | v7.1.0 | [faruzan-assets](https://github.com/4163/faruzan-assets) | 1,660 | [@4163](https://github.com/4163) |
 
 ## Directory layout
 
