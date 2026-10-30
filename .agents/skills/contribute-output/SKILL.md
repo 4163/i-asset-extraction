@@ -83,10 +83,12 @@ Exclude local scratch Python scripts, raw download caches, and temporary analysi
 
 #### README dynamic generation rules
 Agents must never copy-paste template values verbatim or leave unpopulated placeholders. Generate each section dynamically from project facts:
-1. **Dynamic tool discovery.** Do not copy example tool names. Inspect `meta/manifest.json`, extraction logs, or `tools/` to list only tools actually used for this specific target. For an Unreal target, list tools like FModel or UModel. For Unity, list AssetStudio or AnimeStudio. For proprietary audio, list vgmstream. If extraction relied exclusively on REA MCP tools, list REA with a link to the REA repository.
-2. **Dynamic asset categories.** In the asset overview table, only include rows for asset types that exist in the project. Omit categories with zero files.
-3. **Tailored technical specifications.** Include only specifications relevant to the discovered assets. Document Spine version only when `.skel` files exist. Document Live2D runtime only when `.moc3` files exist. Document bone root and Humanoid mapping only when 3D skeletal meshes exist.
-4. **Accurate publisher and legal disclaimer.** Replace `<Game Publisher>` with the actual game publisher or intellectual property holder, such as HoYoverse, Hypergryph, or Nexon. Tailor the disclaimer text to match the content: omit mention of 3D meshes for 2D projects, and omit runtime SDK notices when no Spine or Live2D assets exist.
+1. **No badge banners.** Do not include shields.io or third-party status badges. Keep the header clean and text-focused.
+2. **Prominent pipeline lineage.** Place the pipeline reproduction reference near the top, directly after the live preview link.
+3. **Dynamic tool discovery.** Do not copy example tool names. Inspect `meta/manifest.json`, extraction logs, or `tools/` to list only tools actually used for this specific target. If extraction relied exclusively on REA MCP tools, list REA with a link to the REA repository.
+4. **Dynamic asset categories.** In the asset overview table, only include rows for asset types that exist in the project. Omit categories with zero files. Do not declare 2D skeletal puppet categories unless the entity is primarily a 2D puppet.
+5. **Grounded technical specifications.** Document primary engine formats, skeleton hierarchies, or shader channel maps. Do not speculate on or declare 2D runtimes like Spine or Live2D unless the target character is fundamentally a 2D puppet.
+6. **Concise disclaimer.** State property ownership by the game publisher and limit the purpose statement strictly to archival. Do not enumerate long lists of asset types, and do not append third-party runtime SDK terms.
 
 #### README template structure
 Generate `README.md` following this structure with all fields dynamically populated:
@@ -94,14 +96,16 @@ Generate `README.md` following this structure with all fields dynamically popula
 ```markdown
 # [Entity Name] ([Game Title])
 
-[![Live Gallery](https://img.shields.io/badge/Live-Gallery-brightgreen)](https://[user].github.io/[repo-name])
-[![Upstream Pipeline](https://img.shields.io/badge/Pipeline-i--asset--extraction-blue)](https://github.com/4163/i-asset-extraction)
-
 Extracted game assets, technical specifications, and interactive visual gallery for **[Entity Name]** from **[Game Title]** ([Game Version]).
 
 ## Live preview
 
 Interactive web gallery: https://[user].github.io/[repo-name]
+
+## Pipeline and reproduction
+
+These assets were extracted deterministically using the structured asset extraction pipeline:
+https://github.com/4163/i-asset-extraction
 
 ## Asset overview
 
@@ -110,15 +114,13 @@ Interactive web gallery: https://[user].github.io/[repo-name]
 <!-- Include only categories present in the project -->
 | Audio | [count] | [extensions] | `assets/audio/` |
 | Textures | [count] | [extensions] | `assets/textures/` |
-| 3D Meshes and LODs | [count] | [extensions] | `assets/Mesh/` |
-| 2D Skeletal Puppets | [count] | [extensions] | `assets/` |
+| 3D Models | [count] | [extensions] | `assets/Mesh/` |
 | Text and Lore | [count] | [extensions] | `assets/text/` |
 
 ## Technical specifications
 
-<!-- Include only bullet points applicable to the extracted assets -->
+<!-- Include only bullet points applicable to the primary extracted assets -->
 - **Skeletal hierarchy:** [Bone root node name, if 3D meshes exist].
-- **2D runtime:** [Spine runtime version, e.g. Spine 4.0.47, or Live2D Cubism version, if 2D puppets exist].
 - **Material parameters:** [Shader properties, texture channel mappings, or lighting models, if applicable].
 
 Full technical details are documented in [specs/visualization-spec.md](specs/visualization-spec.md).
@@ -130,15 +132,9 @@ Full technical details are documented in [specs/visualization-spec.md](specs/vis
 |---|---|---|
 | [Actual Tool Name] | [Actual task performed] | [Link to tool repository or official documentation] |
 
-## Pipeline and reproduction
+## Disclaimer
 
-These assets were extracted deterministically using the structured asset extraction pipeline:
-https://github.com/4163/i-asset-extraction
-
-## Disclaimer and copyright
-
-<!-- Tailor strictly to the actual asset types present -->
-Game artwork, character designs, audio recordings, and associated intellectual property remain the property of [Game Publisher]. This repository is maintained strictly for archival, technical research, and educational purposes. [Include third-party runtime SDK terms only if Live2D or Spine puppets are included].
+All game assets and character content are property of [Game Publisher]. This repository is maintained strictly for archival purposes.
 ```
 
 #### Git execution
