@@ -28,6 +28,7 @@ Examples:
 5. **Stage gating.** Complete each roadmap stage fully before proceeding. Stop and present stage findings to the user for discussion. Never finalize prematurely.
 6. **Strict provenance.** Assets must originate exclusively from the target binary/project files or official endpoints referenced in code. Never scrape fan wikis, fandom sites, or third-party repositories. If official game code points to a third-party host or CDN, flag it in the stage document for user review.
 7. **Direct REA tooling.** Use REA MCP tools (`open_binary`, `inspect_artifact`, `extract_artifact`, `inspect_il2cpp_metadata`, etc.) directly for analysis and extraction. Standalone engines in `tools/` serve only as fallbacks for proprietary containers.
+8. **Clean path hygiene.** Never embed host machine absolute drive paths (such as `C:`, `E:\Games`, or `file:///`) in deliverable markdown specs, manifests, or templates. Record clean client titles (such as `Genshin Impact v7.1.0`) and relative repository links (`[specs/mapping.md](specs/mapping.md)`).
 
 ## Workspace layout
 
@@ -182,4 +183,16 @@ Create `specs/visualization-spec.md` to pave the way for rendering, previewing, 
   - *3D models:* Three.js, Babylon.js, or model-viewer with PBR workflow, or direct Godot/Unity scene import.
 - **No speculative implementation code.** Do not generate full application boilerplate or repository code. Keep the specification factual and architectural, giving the user a blueprint to build upon.
 
-**Checkpoint:** Present `specs/visualization-spec.md` to the user for final discussion and sign-off.
+**Checkpoint:** Present `specs/visualization-spec.md` to the user for final discussion and sign-off. Remind the user that the project is ready to be staged and published to a public community repository via `/contribute-output <project_slug>`.
+
+---
+
+## Contribute and publish
+
+Once Stage 4 visualization specifications are approved, the project can be contributed to the public catalog:
+
+```text
+/contribute-output <project_slug>
+```
+
+This workflow verifies clean relative paths, stages an export repository with live GitHub Pages gallery, catalogs external tools used during extraction, and opens a pull request against `https://github.com/4163/i-asset-extraction` to index the project.
