@@ -13,18 +13,11 @@ REA is an independent reverse-engineering tool suite registered globally as an M
 
 1. Clone the repository and enter the directory:
    ```bash
-   git clone https://github.com/4163/i-assets-extraction.git
-   cd i-assets-extraction
+   git clone https://github.com/4163/i-asset-extraction.git
+   cd i-asset-extraction
    ```
 
-2. Install prerequisites:
-   Install `rea-agents` globally and register the MCP server with your coding agent per the [REA setup guide](https://github.com/morluto/rea#readme):
-   ```bash
-   npm install -g rea-agents
-   rea setup
-   ```
-
-3. Run the asset extraction pipeline:
+2. Run the asset extraction pipeline via the [asset extraction skill](.agents/skills/asset-extraction/SKILL.md):
    ```text
    /asset-extraction "<path/to/game_or_project>" "<target_scope>"
    ```
