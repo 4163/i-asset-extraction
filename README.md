@@ -1,6 +1,6 @@
 # Iterative asset extraction
 
-An agent pipeline and workspace for scoped, reproducible asset extraction, categorization, and visualization specification using REA.
+An agent pipeline and workspace for scoped, reproducible asset extraction, categorization, and visualization specification using REA. See [examples and community extractions](#community-extractions).
 
 ## Prerequisites
 
@@ -48,6 +48,16 @@ The pipeline runs through four progressive stages. At each checkpoint, the agent
 | Game | Entity | Version | Repository | Assets | Contributor |
 |---|---|---|---|---|---|
 | Genshin Impact | Faruzan | v7.1.0 | [faruzan-assets](https://github.com/4163/faruzan-assets) | 1,660 | [@4163](https://github.com/4163) |
+
+## Contribute
+
+Publish verified workspace extractions to a dedicated public repository and submit an indexing pull request using the [contribute-output skill](.agents/skills/contribute-output/SKILL.md):
+
+```text
+/contribute-output "<project_slug>"
+```
+
+This workflow sanitizes paths, deploys the interactive gallery to GitHub Pages, and indexes the project in the community table above.
 
 ## Directory layout
 
