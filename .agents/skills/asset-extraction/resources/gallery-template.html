@@ -977,7 +977,7 @@
       const tbody = document.getElementById('audio-body');
       const list = (PAYLOAD.audio || []).filter(a => a.name.toLowerCase().includes(q.toLowerCase()) || (a.group && a.group.toLowerCase().includes(q.toLowerCase())));
       tbody.innerHTML = list.slice(0, 150).map((a) => {
-        const streamUrl = a.playableUrl || a.url || `/stream-audio?file=${encodeURIComponent(a.relPath)}`;
+        const streamUrl = a.playableUrl || a.url || a.relPath;
         const isPlayable = a.playable !== false;
         const trackKey = a.relPath;
         const encKey = encodeURIComponent(trackKey);
@@ -1001,6 +1001,137 @@
           </tr>
         `;
       }).join('');
+    }
+
+    /* WebAssembly vgmstream Decoder Bridge for Game Audio (.wem, .fsb, .hca, etc.) */
+    const VGMSTREAM_WORKER_CODE = `
+"use strict";
+var wasmDir = "https://vgmstream.org/web/";
+var wasmUri = name => wasmDir + name;
+var stdoutBuffer = "", stderrBuffer = "";
+var Module = {
+  preRun: () => {
+    FS.init(undefined, c => { if (c !== null) stdoutBuffer += String.fromCharCode(c); },
+                       c => { if (c !== null) stderrBuffer += String.fromCharCode(c); });
+  },
+  noInitialRun: true,
+  locateFile: name => wasmUri(name)
+};
+
+function writeFile(name, data) {
+  var s = FS.open(name, "w+");
+  FS.write(s, data, 0, data.length, 0);
+  FS.close(s);
+}
+function readFile(name) {
+  try {
+    var f = FS.open(name, "r");
+    var d = new Uint8Array(f.node.usedBytes);
+    FS.read(f, d, 0, f.node.usedBytes, 0);
+    FS.close(f);
+    return d;
+  } catch(e) { return null; }
+}
+function deleteFile(name) { try { FS.unlink(name); } catch(e) {} }
+
+async function convertFile(data, inputFilename) {
+  var outputFilename = "/" + Math.random().toString(36).substring(2) + ".wav";
+  writeFile(inputFilename, data);
+  stdoutBuffer = ""; stderrBuffer = "";
+  try {
+    callMain(["-I", "-o", outputFilename, "-i", inputFilename]);
+  } catch(e) {
+    deleteFile(inputFilename);
+    deleteFile(outputFilename);
+    throw new Error("vgmstream failed: " + (stderrBuffer.trim() || e.message));
+  }
+  deleteFile(inputFilename);
+  var wavdata = readFile(outputFilename);
+  deleteFile(outputFilename);
+  if (!wavdata) throw new Error("vgmstream: No output wav produced");
+  return wavdata.buffer;
+}
+
+async function loadCli() {
+  try {
+    var res = await fetch(wasmDir + "vgmstream-cli.js");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    var cliJs = await res.text();
+    eval.bind()(cliJs);
+    await new Promise((resolve, reject) => {
+      Module["onRuntimeInitialized"] = resolve;
+      Module["onAbort"] = reject;
+    });
+    postMessage({ subject: "ready" });
+  } catch(err) {
+    postMessage({ subject: "error", error: err.message });
+  }
+}
+
+addEventListener("message", async (e) => {
+  var d = e.data;
+  if (d.subject === "convertFile") {
+    try {
+      var buf = await convertFile(d.data, d.filename);
+      postMessage({ symbol: d.symbol, subject: "convertFile", buffer: buf }, [buf]);
+    } catch(err) {
+      postMessage({ symbol: d.symbol, subject: "convertFile", error: err.message });
+    }
+  }
+});
+loadCli();
+`;
+
+    let vgmstreamWorker = null;
+    let vgmstreamReadyPromise = null;
+
+    function getVgmstreamWorker() {
+      if (!vgmstreamWorker) {
+        const blob = new Blob([VGMSTREAM_WORKER_CODE], { type: 'application/javascript' });
+        const blobUrl = URL.createObjectURL(blob);
+        vgmstreamWorker = new Worker(blobUrl);
+        vgmstreamReadyPromise = new Promise((resolve, reject) => {
+          const onMsg = (e) => {
+            if (e.data.subject === 'ready') {
+              vgmstreamWorker.removeEventListener('message', onMsg);
+              resolve(vgmstreamWorker);
+            } else if (e.data.subject === 'error') {
+              vgmstreamWorker.removeEventListener('message', onMsg);
+              reject(new Error('Failed to initialize vgmstream wasm: ' + e.data.error));
+            }
+          };
+          vgmstreamWorker.addEventListener('message', onMsg);
+        });
+      }
+      return vgmstreamReadyPromise;
+    }
+
+    function decodeWithWasm(uint8Data, filename) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const worker = await getVgmstreamWorker();
+          const symbol = Math.random().toString(36).substring(2);
+          const onMsg = (e) => {
+            if (e.data.symbol === symbol) {
+              worker.removeEventListener('message', onMsg);
+              if (e.data.error) {
+                reject(new Error(e.data.error));
+              } else {
+                resolve(e.data.buffer);
+              }
+            }
+          };
+          worker.addEventListener('message', onMsg);
+          worker.postMessage({
+            symbol,
+            subject: 'convertFile',
+            data: uint8Data,
+            filename: filename
+          }, [uint8Data.buffer]);
+        } catch (err) {
+          reject(err);
+        }
+      });
     }
 
     /* Safe Audio Engine (Mutual exclusion, quiet gain staging, brickwall limiter) */
@@ -1081,7 +1212,16 @@
 
         if (token !== currentPlayToken) return;
 
-        const audioBuf = await ctx.decodeAudioData(arrayBuf);
+        let audioBuf;
+        const lowerUrl = url.toLowerCase().split('?')[0];
+        const isProprietary = lowerUrl.endsWith('.wem') || lowerUrl.endsWith('.fsb') || lowerUrl.endsWith('.hca') || lowerUrl.endsWith('.adx');
+        if (isProprietary) {
+          const wavBuffer = await decodeWithWasm(new Uint8Array(arrayBuf), lowerUrl.split('/').pop());
+          if (token !== currentPlayToken) return;
+          audioBuf = await ctx.decodeAudioData(wavBuffer);
+        } else {
+          audioBuf = await ctx.decodeAudioData(arrayBuf);
+        }
         if (token !== currentPlayToken) return;
 
         if (activeSource) {
