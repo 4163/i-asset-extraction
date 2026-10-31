@@ -208,16 +208,12 @@ Create `specs/visualization-spec.md` to pave the way for rendering, previewing, 
   - *3D models:* Three.js, Babylon.js, or model-viewer with PBR workflow, or direct Godot/Unity scene import.
 - **No speculative implementation code.** Do not generate full application boilerplate or repository code. Keep the specification factual and architectural, giving the user a blueprint to build upon.
 
-**Checkpoint:** Present `specs/visualization-spec.md` to the user for final discussion and sign-off. Remind the user that the project is ready to be staged and published to a public community repository via `/contribute-output <project_slug>`.
+**Checkpoint:** Present `specs/visualization-spec.md` for final sign-off to conclude the pipeline. Remind the user they can contribute their project to the community catalog if they plan to publish the extraction (manually or via `/contribute-output`), and note that external projects built with the assets or visualization spec are also welcome. Do not frame contribution as a required step.
 
 ---
 
 ## Contribute and publish
 
-Once Stage 4 visualization specifications are approved, the project can be contributed to the public catalog:
+If the user asks to contribute, run the [contribute-output skill](../contribute-output/SKILL.md) with the project slug.
 
-```text
-/contribute-output <project_slug>
-```
-
-This workflow verifies clean relative paths, stages an export repository with live GitHub Pages gallery, catalogs external tools used during extraction, and opens a pull request against `https://github.com/4163/i-asset-extraction` to index the project.
+This workflow verifies clean relative paths, stages an export repository with a live GitHub Pages gallery, and submits an indexing pull request against `README.md`.
