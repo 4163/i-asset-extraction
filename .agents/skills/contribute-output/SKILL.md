@@ -76,12 +76,14 @@ cache/export/<project_slug>/
 │   ├── dependent-assets.md
 │   └── visualization-spec.md
 └── tools/                  # Proprietary or custom tooling created for extraction
+    ├── README.md           # Documentation for custom tools and their roles (if multiple)
+    └── <tool_files>
 ```
 
 #### Staging exclusions and tool preservation
 Exclude ephemeral scratch scripts, raw download caches, and redundant files:
 - Exclude one-off scratch scripts and temporary analysis logs.
-- Preserve custom or proprietary extraction scripts and utilities created for the project under `tools/` so the repository remains self-contained.
+- Preserve custom or proprietary extraction scripts and utilities created for the project under `tools/` so the repository remains self-contained. When multiple custom tools exist, generate `tools/README.md` to catalog each tool, its role, and its file or release link.
 - Exclude virtual hash folders containing redundant duplicates already organized in Stage 3.
 
 #### Static gallery audio playback
@@ -92,7 +94,7 @@ All template categories, technical fields, and tool entries below are non-exhaus
 - **Asset overview:** Include only categories containing extracted files.
 - **Technical specifications:** Document the verified engine structures, skeleton hierarchies, or material parameters discovered in the workspace.
 - **Toolchain attribution:** Catalog only tools and utilities actually used during extraction.
-- **Proprietary and custom tooling:** Upload custom scripts or proprietary tools created during extraction into `tools/` and link to `[tools/<tool_name>](tools/<tool_name>)`. For tooling binaries exceeding GitHub file limits, attach them to a GitHub Release or create a separate tool repository dump with an initial generic README (for multi-file or multi-architecture tools) so the table links directly to them.
+- **Proprietary and custom tooling:** Upload custom scripts or proprietary tools created during extraction into `tools/`. When multiple custom tools exist, consolidate them into a single row in the root tools table (linking to `[tools/](tools/)`) and describe each tool and role inside `tools/README.md`. For a single tool, link directly to `[tools/<tool_name>](tools/<tool_name>)`. For tooling binaries exceeding GitHub file limits, attach them to a GitHub Release or create a separate tool repository dump with an initial generic README.
 - **Disclaimer:** Attribute asset ownership to the game publisher and state the archival purpose.
 #### README template structure
 Generate `README.md` following this structure with all fields dynamically populated:
@@ -132,10 +134,11 @@ Full technical details are documented in [specs/visualization-spec.md](specs/vis
 ## Tools and utilities used
 
 <!-- List only tools actually used. REA links to morluto/rea (pipeline reproduction already links i-asset-extraction). -->
+<!-- When multiple custom tools exist, consolidate them into one row linking to tools/ and detail them in tools/README.md. -->
 | Tool | Role | Repository / Reference |
 |---|---|---|
 | REA | Reverse engineering framework, MCP server, archive inspection, and pipeline automation | [morluto/rea](https://github.com/morluto/rea) |
-| [Custom / Proprietary Tool] | [Actual task performed] | [tools/<tool_name>](tools/<tool_name>) or [Release / Tool Repo Link] |
+| Custom extraction tooling | Proprietary container decompression and stream demuxing | [tools/](tools/) |
 | [Third-Party Tool] | [Actual task performed] | [Link to upstream repository or official documentation] |
 
 ## Disclaimer
