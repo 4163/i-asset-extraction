@@ -803,6 +803,14 @@
       });
     }
 
+    function resolveAssetUrl(u) {
+      if (!u || typeof u !== 'string') return '';
+      if (u.startsWith('http://') || u.startsWith('https://') || u.startsWith('data:') || u.startsWith('blob:')) {
+        return u;
+      }
+      return u.replace(/^\/+/, '');
+    }
+
     /* State */
     let activeTab = 'visual';
     let selectedCategory = 'All';
@@ -815,11 +823,11 @@
       const favEl = document.getElementById('gallery-favicon');
       if (favEl) {
         if (PAYLOAD.faviconUrl) {
-          favEl.href = PAYLOAD.faviconUrl;
+          favEl.href = resolveAssetUrl(PAYLOAD.faviconUrl);
         } else if (!favEl.href || favEl.href.includes('{{FAVICON_URL}}')) {
           const visuals = PAYLOAD.visualAssets || [];
           const candidate = visuals.find(v => /avatar|icon|portrait|thumb/i.test(v.name)) || visuals[0];
-          if (candidate) favEl.href = candidate.url;
+          if (candidate) favEl.href = resolveAssetUrl(candidate.url);
         }
       }
 
@@ -931,9 +939,9 @@
       });
 
       grid.innerHTML = assets.map(item => `
-        <div class="card" onclick="openModal('${item.name}', '${item.url}', '${item.relPath}', '${item.width}x${item.height}', ${item.sizeBytes})">
+        <div class="card" onclick="openModal('${escapeHtml(item.name)}', resolveAssetUrl('${item.url}'), '${item.relPath}', '${item.width}x${item.height}', ${item.sizeBytes})">
           <div class="card-thumb">
-            <img src="${item.url}" alt="${item.name}" loading="lazy">
+            <img src="${resolveAssetUrl(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy">
           </div>
           <div class="card-content">
             <div class="badges-row">
