@@ -472,7 +472,7 @@
       background: var(--surface-alt);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.28rem 0.65rem;
+      padding: 0.28rem 0.45rem;
       border-radius: 0.25rem;
       font-size: 0.75rem;
       font-weight: 600;
@@ -480,16 +480,33 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.38rem;
-      min-width: 76px;
-      transition: all 0.15s ease;
+      gap: 0.35rem;
+      width: 88px;
+      min-width: 88px;
+      max-width: 88px;
+      box-sizing: border-box;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
       user-select: none;
       line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .btn-play svg {
       width: 13px;
       height: 13px;
       flex-shrink: 0;
+    }
+    .btn-play span {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .col-playback {
+      width: 104px;
+      min-width: 104px;
+      max-width: 104px;
+      text-align: center;
     }
     .btn-play:hover {
       background: var(--accent);
@@ -684,7 +701,7 @@
               <th>Clip Name</th>
               <th>Group</th>
               <th>Size</th>
-              <th>Playback</th>
+              <th class="col-playback">Playback</th>
               <th>Virtual Path</th>
             </tr>
           </thead>
@@ -974,7 +991,7 @@
             <td><strong>${escapeHtml(a.name)}</strong></td>
             <td><span class="badge badge-meta">${escapeHtml(a.group || 'Audio')}</span></td>
             <td>${formatBytes(a.sizeBytes)}</td>
-            <td>
+            <td class="col-playback">
               ${isPlayable ? `<button class="${btnClass}" data-track="${encKey}" onclick="toggleAudio('${encUrl}', '${encKey}')">${btnContent}</button>` : `<span class="badge badge-meta">Proprietary</span>`}
             </td>
             <td><code>${escapeHtml(a.relPath)}</code></td>
