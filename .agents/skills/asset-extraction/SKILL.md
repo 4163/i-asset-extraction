@@ -128,7 +128,7 @@ Structure `specs/mapping.md` into two clear sections. All item types listed belo
    - *UI and branding:* Avatar portraits, dialog busts, gacha banners, ability badges, faction emblems.
    - *Narrative lore and external references:* Lore books, archival records, other characters' voicelines or dialogue about this entity, event quest transcripts, and achievement text.
 
-**Checkpoint:** Save `specs/mapping.md`. Present the mapping findings and the verified alias table to the user. Wait for user discussion and confirmation before moving to Stage 2.
+**Checkpoint:** Save `specs/mapping.md`. Present the mapping findings and the verified alias table to the user. Wait for user confirmation before moving to Stage 2.
 
 ### Stage 2: Target-mirrored extraction
 
@@ -160,9 +160,9 @@ The Stage 2 gallery serves as an audit checkpoint for the user to verify extract
 - The user reviews the gallery to verify that all expected character assets, form variants, and voice lines are present.
 - If expected items are missing (such as purged limited-time event dialogue, festival cutscenes, or version-exclusive items pruned from the local client), the user and agent collaborate to locate the missing content.
 - The agent researches version histories, patch changelogs, or community wikis to identify the specific client version or event introducing the missing assets.
-- Once the historical package or update archive is identified, the agent locates the relevant container, extracts the missing files into `assets/`, updates `meta/manifest.json`, and documents the recovery methodology in `specs/recovery-methodology.md` before advancing to Stage 3 (as demonstrated in `workspace/genshin-impact-faruzan`).
+- Once the historical package or update archive is identified, the agent locates the container, extracts the missing files into `assets/`, updates `meta/manifest.json`, and documents the recovery methodology in `specs/` before advancing to Stage 3.
 
-**Checkpoint:** Save extraction counts, hashes, and divergence notes in `meta/manifest.json`. Host `gallery/index.html` on a local HTTP server, share the `http://localhost:<port>` URL, and wait for confirmation before moving to Stage 3.
+**Checkpoint:** Save extraction counts, hashes, and divergence notes in `meta/manifest.json`. Host `gallery/index.html` on a local HTTP server, share the `http://localhost:<port>` URL, and wait for discussion and confirmation before moving to Stage 3.
 
 ### Stage 3: Asset categorization
 

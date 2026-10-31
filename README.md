@@ -24,7 +24,7 @@ REA is an independent reverse-engineering tool suite registered globally as an M
 
    Example:
    ```text
-   /asset-extraction "/path/to/game" "CharacterName"
+   /asset-extraction "/path/to/game" "Character name" "Goal / additional instructions / context"
    ```
 
 ## Pipeline roadmap and checkpoints
