@@ -53,15 +53,17 @@ For example, asking  the agent (or directly linking the sources) to audit fandom
 |---|---|---|---|---|---|
 | Genshin Impact | Faruzan | v7.1.0 | [faruzan-assets](https://github.com/4163/faruzan-assets) | 1,660 | [@4163](https://github.com/4163) |
 
-## Contribute
+Submissions are not limited to extraction repositories, feel free to open a pull request to add your project to the table. Projects that used the workflow, extracted assets, or found the (`specs/visualization-spec.md`) mapping and recommendendations useful, are more than welcome here.
 
-Publish verified workspace extractions to a dedicated public repository and submit an indexing pull request manually or using the [contribute-output skill](.agents/skills/contribute-output/SKILL.md):
+## Contribute (optional)
+
+If you choose to share your extraction with the community, you can manually publish your repository and open a pull request against the table above, or automate the staging and publishing process using the [contribute-output skill](.agents/skills/contribute-output/SKILL.md):
 
 ```text
 /contribute-output "<project_slug>"
 ```
 
-This skill workflow sanitizes paths, deploys the interactive gallery to GitHub Pages, and indexes the project in the community table above.
+This skill sanitizes paths, deploys the interactive gallery to GitHub Pages, and indexes the project in the community table above.
 
 ## Directory layout
 
