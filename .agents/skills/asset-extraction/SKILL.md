@@ -161,6 +161,8 @@ Move standalone files into their respective category directories under `assets/`
 
 *Dual-use items:* Assets that stand alone but are also referenced by compound assets (such as an icon reused on a 3D billboard) are organized into `assets/textures/` and cross-referenced in `specs/dependent-assets.md`.
 
+*Transform-dependent standalones:* Media requiring presentation transforms (such as anamorphic power-of-two textures, overscan parallax margins, or audio loop offsets) remain in `assets/textures/` or `assets/audio/`, with their transformation parameters flagged for Stage 4.
+
 #### Category B: Dependent and compound assets
 Interdependent asset groups remain anchored in their original extracted paths to preserve relative file references:
 - **3D skeletal rigs:** Meshes (`.fbx`, `.obj`, `.gltf`), texture sets, material definitions (`.mat`), skeletons, skinning weights, animations (`.anim`), LOD tiers, collision hulls, cloth configs.
@@ -182,6 +184,7 @@ Create `specs/visualization-spec.md` to pave the way for rendering, previewing, 
 
 #### Requirements
 - **Factual asset clustering.** Document each compound asset group, file roles, and internal reference paths in `assets/` (e.g., which textures bind to which material slots, which bone hierarchy drives the mesh).
+- **Standalone presentation transforms.** Document exact crop boundaries, aspect ratios, channel masks, or playback loop math for standalone media that require presentation adjustments.
 - **Runtime recommendations.** Provide concrete, accurate runtime and rendering recommendations matching the original engine representation. Listed runtimes are non-exhaustive examples to guide selection; recommend the exact runtime matching the discovered asset formats:
   - *Live2D:* Live2D Cubism Web SDK, PixiJS Live2D display, or official Cubism Viewer.
   - *Spine:* Spine Web Player or Spine-Pixi with matching runtime version.
