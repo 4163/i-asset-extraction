@@ -31,6 +31,10 @@ REA is an independent reverse-engineering tool suite registered globally as an M
 
 The pipeline runs through four progressive stages. At each checkpoint, the agent pauses, reports deliverables, and awaits user confirmation before advancing. All stage specification documents are generated under `workspace/<project_slug>/specs/`.
 
+While the skill and workflow itself is very comprehensive, it doesn't explore options and paths outside of the initial scope you have provided. So if you feel like the agent hasn't been comprehensive enough, provide it with a broader or more specific scope at stage 2 and keep iterating. This way the extraction process and its output meets your initial expections.
+
+For example, asking  the agent (or directly linking the sources) to audit fandoms, forums, and other external sources for the scope you have provided, by following the workflow of stage 1 again.
+
 | Stage | Focus | Primary deliverables | Checkpoint report |
 | :--- | :--- | :--- | :--- |
 | **Stage 1** | Entity and reference mapping | `specs/mapping.md`<br>`meta/manifest.json`<br>`meta/state.json` | Report resolved aliases, identifiers, and catalog verification results. |
