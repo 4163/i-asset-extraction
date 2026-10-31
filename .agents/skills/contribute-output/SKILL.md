@@ -179,9 +179,9 @@ After publishing or updating the repository, synchronize the central registry:
   Append a new row to the table:
 
 ```markdown
-| Game | Entity | Version | Repository | Assets | Contributor |
+| Game | Version | Entity | Repository | Assets | Contributor |
 |---|---|---|---|---|---|
-| <Game Title> | <Entity Name> | <Version> | [<repo-name>](https://github.com/<user>/<repo-name>) | <Count> | [@<user>](https://github.com/<user>) |
+| <Game Title> | <Version> | <Entity Name> | [<repo-name>](https://github.com/<user>/<repo-name>) | <Count> | [@<user>](https://github.com/<user>) |
 ```
 
   Create branch `add-<project_slug>` and run `gh pr create` with a summary of the new extraction.

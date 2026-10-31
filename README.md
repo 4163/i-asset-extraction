@@ -49,10 +49,10 @@ For example, asking the agent to follow the workflow of stage 1 again to audit f
 
 ## Community extractions
 
-| Game | Entity | Version | Repository | Assets | Contributor |
+| Game | Version | Entity | Repository | Assets | Contributor |
 |---|---|---|---|---|---|
-| Genshin Impact | Faruzan | v7.1.0 | [faruzan-assets](https://github.com/4163/faruzan-assets) | 1,660 | [@4163](https://github.com/4163) |
-| Arknights: Endfield | Laevatain / Surtr | v1.6.3 | [laevatain-assets](https://github.com/4163/laevatain-assets) | 2,652 | [@4163](https://github.com/4163) |
+| Genshin Impact | v7.1.0 | Faruzan | [faruzan-assets](https://github.com/4163/faruzan-assets) | 1,660 | [@4163](https://github.com/4163) |
+| Arknights: Endfield | v1.6.3 | Laevatain / Surtr | [laevatain-assets](https://github.com/4163/laevatain-assets) | 2,652 | [@4163](https://github.com/4163) |
 
 Submissions are not limited to extraction repositories, feel free to open a pull request to add your project to the table. Projects that used the workflow, extracted assets, or found the (`specs/visualization-spec.md`) mapping and recommendendations useful, are more than welcome here.
 
