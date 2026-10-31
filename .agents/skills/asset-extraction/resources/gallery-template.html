@@ -373,6 +373,22 @@
     .card:hover .card-thumb img {
       transform: scale(1.04);
     }
+    .badge-video {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 0.2rem;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      pointer-events: none;
+    }
     .card-content {
       padding: 0.9rem;
       display: flex;
@@ -612,7 +628,8 @@
       background-size: 20px 20px;
       background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     }
-    .modal-view img {
+    .modal-view img,
+    .modal-view video {
       max-width: 100%;
       max-height: 65vh;
       object-fit: contain;
@@ -742,6 +759,7 @@
       </div>
       <div class="modal-view">
         <img id="modal-img" src="" alt="">
+        <video id="modal-video" controls autoplay loop style="display:none; max-width:100%; max-height:65vh; border-radius:0.2rem; background:#000;"></video>
       </div>
       <div class="modal-details">
         <span id="modal-info">Dimensions: -</span>
@@ -939,9 +957,10 @@
       });
 
       grid.innerHTML = assets.map(item => `
-        <div class="card" onclick="openModal('${escapeHtml(item.name)}', resolveAssetUrl('${item.url}'), '${item.relPath}', '${item.width}x${item.height}', ${item.sizeBytes})">
+        <div class="card" onclick="openModal('${escapeHtml(item.name)}', resolveAssetUrl('${item.url}'), '${item.relPath}', '${item.width}x${item.height}', ${item.sizeBytes}, resolveAssetUrl('${item.videoUrl || ""}'))">
           <div class="card-thumb">
             <img src="${resolveAssetUrl(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy">
+            ${item.videoUrl ? '<div class="badge-video"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>VIDEO</div>' : ''}
           </div>
           <div class="card-content">
             <div class="badges-row">
@@ -1327,15 +1346,36 @@ loadCli();
     }
 
     /* Modal Lightbox */
-    function openModal(name, url, relPath, dims, bytes) {
+    function openModal(name, url, relPath, dims, bytes, videoUrl = '') {
       currentModalPath = relPath;
       document.getElementById('modal-title').innerText = name;
-      document.getElementById('modal-img').src = url;
+      const imgEl = document.getElementById('modal-img');
+      const vidEl = document.getElementById('modal-video');
+      const targetVideo = resolveAssetUrl(videoUrl);
+      if (targetVideo && vidEl) {
+        imgEl.style.display = 'none';
+        vidEl.style.display = 'block';
+        vidEl.src = targetVideo;
+        vidEl.play().catch(() => {});
+      } else {
+        if (vidEl) {
+          vidEl.pause();
+          vidEl.style.display = 'none';
+          vidEl.src = '';
+        }
+        imgEl.style.display = 'block';
+        imgEl.src = resolveAssetUrl(url);
+      }
       document.getElementById('modal-info').innerHTML = `Dimensions: <strong>${dims}</strong> &middot; Size: <strong>${formatBytes(bytes)}</strong> &middot; Path: <code>${relPath}</code>`;
       document.getElementById('modal-box').classList.add('is-open');
     }
 
     function closeModal(e) {
+      const vidEl = document.getElementById('modal-video');
+      if (vidEl) {
+        vidEl.pause();
+        vidEl.src = '';
+      }
       document.getElementById('modal-box').classList.remove('is-open');
     }
 
