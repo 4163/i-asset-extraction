@@ -10,7 +10,7 @@
   <script>
     (function() {
       try {
-        var pref = localStorage.getItem('rea-gallery-theme') || 'auto';
+        var pref = localStorage.getItem('rea-gallery-theme') || 'dark';
         var isDark = pref === 'dark' || (pref === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
         document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
       } catch (e) {}
@@ -32,11 +32,17 @@
       --text: #0f172a;
       --text-muted: #64748b;
       --text-dim: #94a3b8;
-      --accent: #0284c7;
-      --accent-hover: #0369a1;
-      --warning: #d97706;
+      --accent: #deb76c;
+      --accent-hover: #ebd095;
+      --warning: #cfa052;
+      --success: #5ca685;
+      --info: #6497b5;
       --badge-bg: #f1f5f9;
-      --badge-text: #0369a1;
+      --badge-text: #deb76c;
+      --badge-border: transparent;
+      --badge-video-bg: rgba(15, 23, 42, 0.85);
+      --badge-video-text: #ffffff;
+      --badge-video-border: rgba(255, 255, 255, 0.2);
 
       /* Transparency checkerboard tokens */
       --checker-a: #f1f5f9;
@@ -47,46 +53,58 @@
 
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
-        --bg: #090d16;
-        --surface: #0f172a;
-        --surface-alt: #1e293b;
-        --card-bg: #111c30;
-        --border: #1e293b;
-        --border-light: #334155;
-        --text: #f8fafc;
-        --text-muted: #94a3b8;
-        --text-dim: #64748b;
-        --accent: #38bdf8;
-        --accent-hover: #7dd3fc;
-        --warning: #f59e0b;
-        --badge-bg: #1e293b;
-        --badge-text: #38bdf8;
+        --bg: #1b1d24;
+        --surface: #20232b;
+        --surface-alt: #2c2f38;
+        --card-bg: #2c2f38;
+        --border: #404356;
+        --border-light: #353846;
+        --text: #ffffff;
+        --text-muted: #d3d3d3;
+        --text-dim: #9aa0ac;
+        --accent: #deb76c;
+        --accent-hover: #ebd095;
+        --warning: #cfa052;
+        --success: #5ca685;
+        --info: #6497b5;
+        --badge-bg: #353848;
+        --badge-text: #deb76c;
+        --badge-border: rgba(222, 183, 108, 0.25);
+        --badge-video-bg: rgba(27, 29, 36, 0.9);
+        --badge-video-text: #deb76c;
+        --badge-video-border: rgba(222, 183, 108, 0.4);
 
-        --checker-a: #162032;
-        --checker-b: #0f172a;
-        --modal-overlay: rgba(3, 7, 18, 0.88);
+        --checker-a: #2c2f38;
+        --checker-b: #1b1d24;
+        --modal-overlay: rgba(15, 17, 23, 0.88);
       }
     }
 
     :root[data-theme="dark"] {
-      --bg: #090d16;
-      --surface: #0f172a;
-      --surface-alt: #1e293b;
-      --card-bg: #111c30;
-      --border: #1e293b;
-      --border-light: #334155;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-      --accent: #38bdf8;
-      --accent-hover: #7dd3fc;
-      --warning: #f59e0b;
-      --badge-bg: #1e293b;
-      --badge-text: #38bdf8;
+      --bg: #1b1d24;
+      --surface: #20232b;
+      --surface-alt: #2c2f38;
+      --card-bg: #2c2f38;
+      --border: #404356;
+      --border-light: #353846;
+      --text: #ffffff;
+      --text-muted: #d3d3d3;
+      --text-dim: #9aa0ac;
+      --accent: #deb76c;
+      --accent-hover: #ebd095;
+      --warning: #cfa052;
+      --success: #5ca685;
+      --info: #6497b5;
+      --badge-bg: #353848;
+      --badge-text: #deb76c;
+      --badge-border: rgba(222, 183, 108, 0.25);
+      --badge-video-bg: rgba(27, 29, 36, 0.9);
+      --badge-video-text: #deb76c;
+      --badge-video-border: rgba(222, 183, 108, 0.4);
 
-      --checker-a: #162032;
-      --checker-b: #0f172a;
-      --modal-overlay: rgba(3, 7, 18, 0.88);
+      --checker-a: #2c2f38;
+      --checker-b: #1b1d24;
+      --modal-overlay: rgba(15, 17, 23, 0.88);
     }
 
     :root[data-theme="light"] {
@@ -99,11 +117,17 @@
       --text: #0f172a;
       --text-muted: #64748b;
       --text-dim: #94a3b8;
-      --accent: #0284c7;
-      --accent-hover: #0369a1;
-      --warning: #d97706;
+      --accent: #deb76c;
+      --accent-hover: #ebd095;
+      --warning: #cfa052;
+      --success: #5ca685;
+      --info: #6497b5;
       --badge-bg: #f1f5f9;
-      --badge-text: #0369a1;
+      --badge-text: #deb76c;
+      --badge-border: transparent;
+      --badge-video-bg: rgba(15, 23, 42, 0.85);
+      --badge-video-text: #ffffff;
+      --badge-video-border: rgba(255, 255, 255, 0.2);
 
       --checker-a: #f1f5f9;
       --checker-b: #e2e8f0;
@@ -377,8 +401,8 @@
       position: absolute;
       bottom: 8px;
       right: 8px;
-      background: rgba(15, 23, 42, 0.85);
-      color: #fff;
+      background: var(--badge-video-bg);
+      color: var(--badge-video-text);
       padding: 2px 6px;
       border-radius: 0.2rem;
       font-size: 11px;
@@ -386,7 +410,7 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid var(--badge-video-border);
       pointer-events: none;
     }
     .card-content {
@@ -409,9 +433,11 @@
       text-transform: uppercase;
       letter-spacing: 0.02em;
     }
-    .badge-primary { background: var(--badge-bg); color: var(--badge-text); }
+    .badge-primary { background: var(--badge-bg); color: var(--badge-text); border: 1px solid var(--badge-border); }
     .badge-meta { background: var(--surface-alt); color: var(--text-muted); border: 1px solid var(--border); }
-    .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-warning { background: color-mix(in srgb, var(--warning) 14%, transparent); color: var(--warning); border: 1px solid color-mix(in srgb, var(--warning) 28%, transparent); }
+    .badge-success { background: color-mix(in srgb, var(--success) 14%, transparent); color: var(--success); border: 1px solid color-mix(in srgb, var(--success) 28%, transparent); }
+    .badge-info { background: color-mix(in srgb, var(--info) 14%, transparent); color: var(--info); border: 1px solid color-mix(in srgb, var(--info) 28%, transparent); }
 
     .notices-container {
       margin-bottom: 1.5rem;
@@ -431,7 +457,8 @@
       font-size: 0.82rem;
     }
     .notice-card.warning { border-left-color: var(--warning); }
-    .notice-card.info { border-left-color: var(--accent); }
+    .notice-card.success { border-left-color: var(--success); }
+    .notice-card.info { border-left-color: var(--info); }
     .notice-header {
       font-weight: 700;
       color: var(--text);
@@ -773,8 +800,8 @@
     const PAYLOAD = __PAYLOAD_PLACEHOLDER__;
 
     /* Theme Management */
-    let currentTheme = 'auto';
-    try { currentTheme = localStorage.getItem('rea-gallery-theme') || 'auto'; } catch(e) {}
+    let currentTheme = 'dark';
+    try { currentTheme = localStorage.getItem('rea-gallery-theme') || 'dark'; } catch(e) {}
 
     function applyTheme() {
       const isDark = currentTheme === 'dark' || (currentTheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -864,15 +891,22 @@
       const notices = PAYLOAD.notices || [];
       if (notices.length > 0) {
         noticesContainer.style.display = 'flex';
-        noticesContainer.innerHTML = notices.map(n => `
-          <div class="notice-card ${n.type || 'info'}">
-            <div class="notice-header">
-              <span class="badge ${n.type === 'warning' ? 'badge-warning' : 'badge-primary'}">${n.badge || 'Audit Notice'}</span>
-              ${n.title || ''}
+        noticesContainer.innerHTML = notices.map(n => {
+          const type = n.type || 'info';
+          let badgeClass = 'badge-primary';
+          if (type === 'warning') badgeClass = 'badge-warning';
+          else if (type === 'success') badgeClass = 'badge-success';
+          else if (type === 'info') badgeClass = 'badge-info';
+          return `
+            <div class="notice-card ${type}">
+              <div class="notice-header">
+                <span class="badge ${badgeClass}">${n.badge || 'Audit Notice'}</span>
+                ${n.title || ''}
+              </div>
+              <div class="notice-message">${n.message}</div>
             </div>
-            <div class="notice-message">${n.message}</div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       } else {
         noticesContainer.style.display = 'none';
       }
