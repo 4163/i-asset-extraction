@@ -92,8 +92,8 @@ GitHub Pages serves static files only. In `gallery/index.html`, point all audio 
 #### README generation guidelines
 All template categories, technical fields, and tool entries below are non-exhaustive examples to guide structure rather than rigid boundaries. Agents must adjust them dynamically to reflect the actual target project, omitting unused rows and populating verified data:
 - **Asset overview:** Include only categories containing extracted files.
-- **Technical specifications:** Document the verified engine structures, skeleton hierarchies, or material parameters discovered in the workspace.
-- **Toolchain attribution:** Catalog only tools and utilities actually used during extraction.
+- **Technical specifications:** Document verified engine structures, skeleton hierarchies, material parameters, or project-specific extraction and divergence protocols (referencing relevant documents in `specs/`).
+- **Toolchain attribution:** Catalog only tools and utilities actually used during extraction. Every reference link must be verified to lead to the actual tool repository, documentation, or upstream source where the tool was found. Do not guess repository URLs or maintainer forks.
 - **Proprietary and custom tooling:** Upload custom scripts or proprietary tools created during extraction into `tools/`. When multiple custom tools exist, consolidate them into a single row in the root tools table (linking to `[tools/](tools/)`) and describe each tool and role inside `tools/README.md`. For a single tool, link directly to `[tools/<tool_name>](tools/<tool_name>)`. For tooling binaries exceeding GitHub file limits, attach them to a GitHub Release or create a separate tool repository dump with an initial generic README.
 - **Disclaimer:** Attribute asset ownership to the game publisher and state the archival purpose.
 #### README template structure
@@ -128,12 +128,13 @@ Interactive web gallery: https://[user].github.io/[repo-name]
 <!-- Include only bullet points applicable to the primary extracted assets -->
 - **Skeletal hierarchy:** [Bone root node name, if 3D meshes exist].
 - **Material parameters:** [Shader properties, texture channel mappings, or lighting models, if applicable].
+- **[Specialized protocols]:** [Summarize any project-specific extraction, divergence, or recovery protocols, linking to supporting documents in specs/, if applicable].
 
 Full technical details are documented in [specs/visualization-spec.md](specs/visualization-spec.md).
 
 ## Tools and utilities used
 
-<!-- List only tools actually used. REA links to morluto/rea (pipeline reproduction already links i-asset-extraction). -->
+<!-- List only tools actually used. REA links to morluto/rea. -->
 <!-- When multiple custom tools exist, consolidate them into one row linking to tools/ and detail them in tools/README.md. -->
 | Tool | Role | Repository / Reference |
 |---|---|---|
