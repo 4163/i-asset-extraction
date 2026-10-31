@@ -164,7 +164,7 @@ All game assets and character content are property of [Game Publisher]. This rep
   6. Push to `main` and trigger GitHub Pages redeployment.
 
 > [!NOTE]
-> GitHub does not expose an API endpoint for the "Include in the home page: Packages" checkbox in repository sidebar settings. Unchecking Packages must be toggled manually in the repository About dialog if desired.
+> GitHub does not expose an API endpoint for the "Include in the home page: Releases / Packages" checkbox in repository sidebar settings. Remind the user to adjust the toggles accordingly.
 
 ---
 
