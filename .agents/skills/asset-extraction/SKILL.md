@@ -28,7 +28,7 @@ Examples:
 5. **Stage gating.** Complete each roadmap stage fully before proceeding. Stop and present stage findings to the user for discussion. Never finalize prematurely.
 6. **Strict provenance.** Assets must originate exclusively from target binary/project files or official distribution packages. Never scrape fan wikis, fandom sites, or third-party repositories for raw binary assets. However, researching community wikis, version archives, or patch changelogs is encouraged to identify historical event rosters, version appearances, and quest names when tracking missing or purged assets. If official game code points to a third-party host or CDN, flag it in the stage document for user review.
 7. **Direct REA tooling.** Use REA MCP tools (`open_binary`, `inspect_artifact`, `extract_artifact`, `inspect_il2cpp_metadata`, etc.) directly for analysis and extraction. Standalone engines in `tools/` serve only as fallbacks for proprietary containers.
-8. **Clean path hygiene.** Never embed host machine absolute drive paths (such as `C:`, `E:\Games`, or `file:///`) in deliverable markdown specs, manifests, or templates. Record clean client titles (such as `Genshin Impact v7.1.0`) and relative repository links (`[specs/mapping.md](specs/mapping.md)`).
+8. **Clean path hygiene.** Never embed host machine absolute drive paths (such as `C:`, `E:\Games`, or `file:///`) in deliverable markdown specs, manifests, or templates. Record clean client titles (such as `Genshin Impact v7.1.0`) and use inline code for paths.
 
 ## Workspace layout
 
