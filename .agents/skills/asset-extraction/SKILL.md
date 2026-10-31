@@ -135,9 +135,18 @@ Structure `specs/mapping.md` into two clear sections. All item types listed belo
 Extract cataloged assets into `assets/` preserving internal package paths.
 
 #### Requirements
-- Replicate internal package paths (e.g., `assets/Assets/Characters/<Codename>/...` or `assets/Game/Characters/...`) to preserve relative linkages.
+- Replicate internal package paths (such as `assets/Assets/Characters/<Codename>/...` or `assets/Game/Characters/...`) to preserve relative linkages.
 - Use REA MCP tools (`open_binary`, `inspect_artifact`, `extract_artifact`).
 - Check provenance. Reject third-party sources. If official assets reference an external CDN, document the URI and request confirmation before retrieving.
+- Exhaustive extraction. Extraction must be exhaustive across every asset category mapped in Stage 1. Loose files, audio banks, video containers, and engine archives (such as Unity AssetBundles, Unreal `.pak`/`.ucas`, or CRI `.cpk`) must all be unpacked into individual asset files on disk. Never stop at loose files or audio containers while leaving models, textures, animations, or prefabs locked inside engine archives.
+- Archive unpacking and deserialization. When mapped assets reside inside encrypted, chunked, or proprietary containers, Stage 2 must decrypt the container streams and unpack or deserialize the constituent assets (such as `.fbx`, `.obj`, `.png`, `.dds`, `.anim`, `.prefab`, `.mat`) into their respective relative paths under `assets/`.
+
+#### Parity verification gate
+Before building the gallery or concluding Stage 2, run a deterministic verification script in the workspace:
+- Confirm extraction parity between Stage 1 scope and disk output:
+  `assert len(extracted_assets_on_disk) == len(in_scope_manifest_records)`
+- Validate that all mapped asset classes (visuals, 3D models, textures, animations, audio, config tables) are represented in `assets/`.
+- If any mapped asset cannot be unpacked due to missing keys, unsupported proprietary formats, or missing game archives, document the root cause in `meta/manifest.json` and `meta/state.json`, and surface a divergence notice in the gallery. Do not skip assets silently.
 
 #### Visual confirmation gallery
 Before proceeding to Stage 3, verify extracted coverage in an interactive local gallery:
