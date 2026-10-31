@@ -151,6 +151,7 @@ Before building the gallery or concluding Stage 2, run a deterministic verificat
 #### Visual confirmation gallery
 Before proceeding to Stage 3, verify extracted coverage in an interactive local gallery:
 - Build `gallery/index.html` from `resources/gallery-template.html`, linking directly to `assets/` files without copying.
+- Support static textures and video media in `visualAssets`. For extracted game videos (such as CRI Sofdec USM cutscenes, Bink clips, or character showcase reels), extract image thumbnails for `url`, and provide `videoUrl` pointing to playable web streams (`.mp4` or `.webm`) for in-modal playback and video card badges.
 - Assign an appropriate extracted icon or portrait as the page favicon.
 - Surface notice cards for missing, purged, or out-of-scope assets.
 
@@ -170,7 +171,7 @@ Partition assets in `assets/` into standalone media and compound clusters.
 #### Category A: Standalone assets
 Files that function independently without runtime dependencies:
 - **Audio:** Background music tracks, ambient loops, sound effects, voice clips (organized into `assets/audio/`).
-- **Graphics:** Standalone UI icons, background CGs, splash illustrations, promotional art (organized into `assets/textures/`).
+- **Graphics and video:** Standalone UI icons, background CGs, splash illustrations, promotional art, and standalone cutscene or guide videos (organized into `assets/textures/` or `assets/videos/`).
 - **Text:** Localized subtitle files, voiceline transcripts, character bios, lore documents, dialogue trees (organized into `assets/text/`).
 
 Move standalone files into their respective category directories under `assets/`.
