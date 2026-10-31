@@ -26,13 +26,13 @@ Examples:
 3. **Disk boundaries.** Keep all heavy analysis dumps and extraction outputs inside this repository. Never write heavy analysis dumps or game binaries to system drives or other drives.
 4. **Divergence and audit tracking.** Never discard missing assets silently. When mapped files are missing on disk (such as purged events or delisted DLC) or cut by scope, document the cause in `meta/manifest.json` and surface notice cards in the visual gallery.
 5. **Stage gating.** Complete each roadmap stage fully before proceeding. Stop and present stage findings to the user for discussion. Never finalize prematurely.
-6. **Strict provenance.** Assets must originate exclusively from the target binary/project files or official endpoints referenced in code. Never scrape fan wikis, fandom sites, or third-party repositories. If official game code points to a third-party host or CDN, flag it in the stage document for user review.
+6. **Strict provenance.** Assets must originate exclusively from target binary/project files or official distribution packages. Never scrape fan wikis, fandom sites, or third-party repositories for raw binary assets. However, researching community wikis, version archives, or patch changelogs is encouraged to identify historical event rosters, version appearances, and quest names when tracking missing or purged assets. If official game code points to a third-party host or CDN, flag it in the stage document for user review.
 7. **Direct REA tooling.** Use REA MCP tools (`open_binary`, `inspect_artifact`, `extract_artifact`, `inspect_il2cpp_metadata`, etc.) directly for analysis and extraction. Standalone engines in `tools/` serve only as fallbacks for proprietary containers.
 8. **Clean path hygiene.** Never embed host machine absolute drive paths (such as `C:`, `E:\Games`, or `file:///`) in deliverable markdown specs, manifests, or templates. Record clean client titles (such as `Genshin Impact v7.1.0`) and relative repository links (`[specs/mapping.md](specs/mapping.md)`).
 
 ## Workspace layout
 
-For a project identified as `<project_slug>`:
+For a project identified as `<project_slug>`, all stage specifications are generated under `workspace/<project_slug>/specs/`:
 
 ```text
 <repository_root>/
@@ -144,6 +144,13 @@ Before proceeding to Stage 3, verify extracted coverage in an interactive local 
 - Build `gallery/index.html` from `resources/gallery-template.html`, linking directly to `assets/` files without copying.
 - Assign an appropriate extracted icon or portrait as the page favicon.
 - Surface notice cards for missing, purged, or out-of-scope assets.
+
+#### User review and collaborative recovery
+The Stage 2 gallery serves as an audit checkpoint for the user to verify extraction coverage against expectations:
+- The user reviews the gallery to verify that all expected character assets, form variants, and voice lines are present.
+- If expected items are missing (such as purged limited-time event dialogue, festival cutscenes, or version-exclusive items pruned from the local client), the user and agent collaborate to locate the missing content.
+- The agent researches version histories, patch changelogs, or community wikis to identify the specific client version or event introducing the missing assets.
+- Once the historical package or update archive is identified, the agent locates the relevant container, extracts the missing files into `assets/`, updates `meta/manifest.json`, and documents the recovery methodology in `specs/recovery-methodology.md` before advancing to Stage 3 (as demonstrated in `workspace/genshin-impact-faruzan`).
 
 **Checkpoint:** Save extraction counts, hashes, and divergence notes in `meta/manifest.json`. Host `gallery/index.html` on a local HTTP server, share the `http://localhost:<port>` URL, and wait for confirmation before moving to Stage 3.
 

@@ -29,19 +29,19 @@ REA is an independent reverse-engineering tool suite registered globally as an M
 
 ## Pipeline roadmap and checkpoints
 
-The pipeline runs through four progressive stages. At each checkpoint, the agent pauses, reports deliverables, and awaits user confirmation before advancing.
+The pipeline runs through four progressive stages. At each checkpoint, the agent pauses, reports deliverables, and awaits user confirmation before advancing. All stage specification documents are generated under `workspace/<project_slug>/specs/`.
 
 | Stage | Focus | Primary deliverables | Checkpoint report |
 | :--- | :--- | :--- | :--- |
 | **Stage 1** | Entity and reference mapping | `specs/mapping.md`<br>`meta/manifest.json`<br>`meta/state.json` | Report resolved aliases, identifiers, and catalog verification results. |
-| **Stage 2** | Target-mirrored extraction | `assets/`<br>`gallery/index.html` | Host local gallery (`http://localhost:<port>`) to manually check files and flag missing assets. |
+| **Stage 2** | Target-mirrored extraction & user review | `assets/`<br>`gallery/index.html` | Host local gallery (`http://localhost:<port>`) for user review to inspect coverage, flag missing assets, and coordinate recovery. |
 | **Stage 3** | Asset categorization | `assets/audio/`<br>`assets/textures/`<br>`assets/text/`<br>`specs/dependent-assets.md` | Report categorized standalone files, provenance ledger, and compound dependency clusters. |
 | **Stage 4** | Visualization specification | `specs/visualization-spec.md` | Present runtime and rendering blueprints for final sign-off. |
 
 - **Stage 1 (Mapping)**: Resolves target IDs, aliases, and container hashes across package tables. Verifies zero dangling references.
-- **Stage 2 (Extraction)**: Mirrors assets into `assets/` preserving original paths. Flags client-purged or out-of-scope files in the local gallery.
+- **Stage 2 (Extraction & user review)**: Mirrors assets into `assets/` preserving original paths, generates `gallery/index.html`, and hosts it locally for user inspection. The user reviews extracted coverage to identify any missed or expected assets (such as past limited-time event audio or version-exclusive items). When assets were pruned from the current client, the user directs the agent to investigate patch notes or community wikis, locate historical package archives, and recover the missing files before advancing.
 - **Stage 3 (Categorization)**: Organizes standalone files into `assets/audio/`, `assets/textures/`, and `assets/text/`, leaves compound rigs anchored in original paths, and documents the pre-organization directory trace in `specs/dependent-assets.md`.
-- **Stage 4 (Specification)**: Documents material bindings, hierarchies, and runtime recommendations in `specs/visualization-spec.md`.
+- **Stage 4 (Specification)**: Documents material bindings, hierarchies, standalone presentation transforms, and runtime recommendations in `specs/visualization-spec.md`.
 
 ## Community extractions
 
@@ -61,7 +61,7 @@ This skill workflow sanitizes paths, deploys the interactive gallery to GitHub P
 
 ## Directory layout
 
-- `workspace/`: Extracted files, categorized assets, decompiled pseudocode, and generated specifications. Each target project receives an isolated subfolder.
+- `workspace/`: Extracted files, categorized assets, decompiled pseudocode, and generated stage specifications (`workspace/<project_slug>/specs/`). Each target project receives an isolated subfolder.
 - `tools/`: Optional external reverse-engineering utilities and engines (such as Ghidra, JADX, or Kuna) when required as fallbacks.
 - `cache/`: Temporary extraction dumps, streams, and evidence bundles.
 - `.agents/`: Workspace rules and specialized agent skills, including the asset extraction workflow.
