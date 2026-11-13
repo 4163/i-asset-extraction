@@ -50,9 +50,24 @@ Check whether the target repository already exists on GitHub or if `meta/state.j
   1. **Repository name.** Propose `<game-slug>-<entity-slug>-assets` under the user's authenticated GitHub account. Confirm the name.
   2. **Heavy asset distribution.** When compound assets exceed standard Git thresholds (such as multi-gigabyte animation clip folders), ask whether to track them via Git LFS or package raw animations into a compressed GitHub Release attachment to keep git clones light.
   3. **GitHub Pages activation.** Confirm deploying `gallery/` to GitHub Pages (`gh-pages` branch or root docs) so the live preview URL works immediately.
+  4. **Repository topics.** Propose verified discoverability tags:
+     - **Baseline tags.** Always include `asset-extraction`, `game-assets`, `datamining`, `reverse-engineering`, and `coding-agents` from the central catalog (`4163/i-asset-extraction`).
+     - **Scoped candidate generation.** Inspect `meta/state.json` and `specs/mapping.md` to draft candidate tags across five categories:
+       - **Game titles and aliases.** Full official title, common acronyms, and recognized alternate spellings (such as `nikke`, `goddess-of-victory-nikke`, `genshin-impact`).
+       - **Developers and publishers.** Studio, publisher, and parent organization names alongside common variations (such as `hoyoverse`, `mihoyo`, `hypergryph`).
+       - **Character entities and variants.** Scoped character names, form variants, and costume designations (such as `faruzan`, `laevatain`).
+       - **Asset technologies and runtimes.** Core animation runtimes, engines, and audio middleware (such as `spine`, `live2d`, `unity`, `wwise`).
+       - **Distinct scope attributes.** Defining scope metadata when relevant to the extraction (such as shared voice actors or squad affiliation).
+     - **Verification checks.** Run `gh search repos --topic=<candidate>` before suggesting any scoped tag:
+       - **Volume.** Require at least 9 existing public repositories so this repository becomes the 10th or higher. Skip orphan tags.
+       - **Diversity.** Results must span at least 3 distinct owners. Skip single-author personal tags.
+       - **Relevance.** At least 70% of the top results must match the target game, franchise, or tool.
+       - **Name collisions.** Drop common dictionary words and personal names (`miranda`, `maiden`, `echo`) that collide with unrelated software or languages. Character names that miss the 9-repo threshold are omitted as topics since the title, description, and README already cover them.
+     - **Confirmation.** Present the filtered candidates alongside the baseline. Let the user accept, cut, or add tags.
 - **Repository synchronization (existing repository):**
   1. **Target repository.** Confirm the existing remote repository URL detected from project metadata.
   2. **Patch scope.** Confirm the game client version bump (such as `v7.1.0` to `v7.2.0`) and summarize added or modified assets.
+  3. **Topic audit.** Check whether added entity variants or formats introduce verified topics.
 
 ---
 
@@ -156,6 +171,10 @@ All game assets and character content are property of [Game Publisher]. This rep
      gh repo create <repo-name> --public --source=. --remote=origin --push --description "Extracted assets, technical specifications, and interactive gallery for <Entity Name> (<Game Title>)" --homepage "https://<user>.github.io/<repo-name>"
      ```
   4. Deploy `gallery/` contents to GitHub Pages using `gh-pages` branch or repository settings.
+  5. Apply confirmed repository topics via GitHub CLI:
+     ```bash
+     gh repo edit <repo-name> --add-topic <topic1> --add-topic <topic2> ...
+     ```
 - **Repository synchronization:**
   1. Clone or fetch the existing remote repository into `cache/export/<project_slug>`.
   2. Overlay updated assets, specs, manifests, and rebuilt gallery.
